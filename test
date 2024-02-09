@@ -1,0 +1,69 @@
+import win32gui, win32con
+import time
+import pyautogui
+import pydirectinput
+import datetime
+
+minimized = []
+afk = 'rp'
+def find_all_windows(name):
+    result = []
+
+    def winEnumHandler(hwnd, ctx):
+        if win32gui.IsWindowVisible(hwnd) and win32gui.GetWindowText(hwnd) == name:
+            result.append(hwnd)
+
+    win32gui.EnumWindows(winEnumHandler, None)
+    return result
+
+
+
+while True:
+    try:
+        current_time = datetime.datetime.now()
+        min_now = int(current_time.strftime("%M"))
+        print(min_now)
+        min_now = 1
+        if min_now > 1:
+            hwnds = find_all_windows('Roblox')
+            print(hwnds)
+            for i in hwnds:
+                win32gui.ShowWindow(i, win32con.SW_NORMAL)
+                win32gui.SetForegroundWindow(i)
+                time.sleep(2)
+                pydirectinput.press('shift')
+                time.sleep(2)
+                #win32gui.ShowWindow(i, win32con.SW_MINIMIZE)
+                #minimized.append(i)
+        elif min_now <= 1:
+            hwnds = find_all_windows('Roblox')
+            print(hwnds)
+            for i in hwnds:
+                win32gui.ShowWindow(i, win32con.SW_NORMAL)
+                win32gui.SetForegroundWindow(i)
+                time.sleep(0.5)
+                pydirectinput.press('f8')
+                time.sleep(0.5)
+                #Ctrl + shift +alt + P
+                pydirectinput.keyDown('ctrl')
+                pydirectinput.keyDown('shift')
+                pydirectinput.keyDown('alt')
+                pydirectinput.keyDown('p')
+                time.sleep(0.1)
+                pydirectinput.keyUp('ctrl')
+                pydirectinput.keyUp('shift')
+                pydirectinput.keyUp('alt')
+                pydirectinput.keyUp('p')
+
+                #win32gui.ShowWindow(i, win32con.SW_MINIMIZE)
+                #minimized.append(i)
+                time.sleep(25)
+                win32gui.ShowWindow(i, win32con.SW_MINIMIZE)
+                win32gui.ShowWindow(i, win32con.SW_NORMAL)
+                win32gui.SetForegroundWindow(i)
+                time.sleep(0.5)
+                pydirectinput.press('f8')
+                time.sleep(0.5)
+    except Exception as e:
+        print(e)
+        pass
